@@ -33,28 +33,42 @@ def api_call(dependency, ecosystem):
     while has_next_page:
         # GraphQL query with pagination and filtering by package
         query = """
-        query fetchAdvisories($ecosystem: SecurityAdvisoryEcosystem, $package: String, $cursor: String) {
-          securityVulnerabilities(ecosystem: $ecosystem, first: 100, after: $cursor, package: $package) {
-            edges {
-              node {
-                advisory {
-                  id
-                  ghsaId
-                  summary
-                  description
-                  references {
-                    url
+          query fetchAdvisories($ecosystem: SecurityAdvisoryEcosystem, $package: String, $cursor: String) {
+            securityVulnerabilities(
+              ecosystem: $ecosystem
+              first: 100
+              after: $cursor
+              package: $package
+            ) {
+              edges {
+                node {
+                  advisory {
+                    identifiers {
+                      type
+                      value
+                    }
+                    severity
+                    cvss {
+                      score
+                    }
+                    summary
+                    references {
+                      url
+                    }
                   }
+                  firstPatchedVersion {
+                    identifier
+                  }
+                  vulnerableVersionRange
                 }
               }
-            }
-            pageInfo {
-              endCursor
-              hasNextPage
+              pageInfo {
+                endCursor
+                hasNextPage
+              }
             }
           }
-        }
-        """
+                """
 
         variables = {
             'ecosystem': ecosystem,
@@ -65,10 +79,6 @@ def api_call(dependency, ecosystem):
         result = run_query(query, variables)
         advisories_batch = result['data']['securityVulnerabilities']['edges']
         advisories.extend(advisories_batch)
-
-        for advisory in advisories_batch:
-            print(advisory)
-            print('========================================')
 
         page_info = result['data']['securityVulnerabilities']['pageInfo']
         has_next_page = page_info['hasNextPage']
