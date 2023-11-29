@@ -24,8 +24,9 @@ def run_query(query, variables):
         raise Exception(f'Query failed with status code {response.status_code}')
     
 
-def api_call(package_name, ecosystem): 
-
+def api_call(dependency, ecosystem): 
+    
+    package_name, specifier, version = dependency 
     advisories = []
     cursor = None
     has_next_page = True

@@ -1,4 +1,5 @@
 import argparse
+import re
 from api_handler import api_call
 
 def parse_requirements(file_path):
@@ -6,12 +7,15 @@ def parse_requirements(file_path):
     dependencies = []
     ecosystem = 'PIP'
 
+    pattern = re.compile(r"([a-zA-Z0-9_\-]+)(==|>=|<=|>|<|!=|~=)([a-zA-Z0-9_.\-]+)")
+
     with open(file_path, 'r') as file:
-        
         for line in file:
-            if '==' in line:
-                package, version = line.strip().split('==')
-                dependencies.append(package)
+            match = pattern.match(line.strip())
+            if match: 
+                package, specifier, version = match.groups()
+                dependencies.append((package, specifier, version))
+            
     return dependencies, ecosystem
 
 def main():
