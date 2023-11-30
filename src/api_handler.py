@@ -83,8 +83,8 @@ def api_call(dependency, ecosystem):
         page_info = result['data']['securityVulnerabilities']['pageInfo']
         has_next_page = page_info['hasNextPage']
         cursor = page_info['endCursor']
-
-        time.sleep(1)
+        #healthy pause to avoid rate limiting
+        time.sleep(1) 
 
     return advisories
 
