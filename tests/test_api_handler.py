@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 import pytest
-from unittest.mock import Mock
 
 #adjsuting sys.path to include source directory [TEMPORARY]
 src_dir = str(Path(__file__).parent.parent / 'src')
@@ -152,8 +151,7 @@ def mock_run_query(mocker):
         }
         }
     
-
-    mocker.patch('run_query', return_value=mock_response)
+    mocker.patch('api_handler.run_query', return_value=mock_response)
 
 def test_api_call():
     
@@ -164,5 +162,5 @@ def test_api_call():
     advisories = api_call(dependency, ecosystem)
 
     #assertions
-    #example assertion to see if 
+    #example assertion to see if a response was returned
     assert len(advisories) > 0
