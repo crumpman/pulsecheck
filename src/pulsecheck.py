@@ -9,14 +9,26 @@ def parse_requirements(file_path):
     dependencies = []
     ecosystem = 'PIP'
 
-    pattern = re.compile(r"([a-zA-Z0-9_\-]+)(==|>=|<=|>|<|!=|~=)([a-zA-Z0-9_.\-]+)")
-
+    #two regular expressions for single or multiple
+    single_pattern = re.compile(r"([a-zA-Z0-9_\-]+)(==|===|>=|<=|>|<|!=|~=)([a-zA-Z0-9_.\-]+)")
+    multiple_pattern = re.compile(r"([a-zA-Z0-9_\-]+)((?:[><=!~]=?[0-9.]+,?)+)")
+    
     with open(file_path, 'r') as file:
         for line in file:
-            match = pattern.match(line.strip())
-            if match: 
-                package, specifier, version = match.groups()
-                dependencies.append((package, specifier, version))
+            line = line.strip()
+
+            if ',' in line: #indicating mutliple specifiers
+                package, specifiers = multiple_pattern.match(line).groups()
+                for specifier in specifiers.split(','):
+                    op, version = re.match(r"([><=!~]=?)([0-9.]+)", specifier).groups()
+                    dependencies.append((package, op, version))
+
+            else: 
+                match = single_pattern.match(line)
+                if match:
+                    package, specifier, version = match.groups()
+                    dependencies.append((package, specifier, version))
+                
             
     return dependencies, ecosystem
 
