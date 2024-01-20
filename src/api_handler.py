@@ -23,6 +23,18 @@ def run_query(query, variables):
     else:
         raise Exception(f'Query failed with status code {response.status_code}')
     
+def deduplicate_advisories(advisories):
+    unique_advisories = []
+    seen = set()
+    
+    for advisory in advisories:
+        identifier = advisory['node']['advisory']['identifiers'][0]['value']  #set unique key
+        if identifier not in seen:
+            seen.add(identifier)
+            unique_advisories.append(advisory)
+    return unique_advisories
+        
+    
 
 def api_call(dependency, ecosystem): 
     
@@ -86,5 +98,6 @@ def api_call(dependency, ecosystem):
         #healthy pause to avoid rate limiting
         time.sleep(1) 
 
-    return advisories
+    unique_advisories = deduplicate_advisories(advisories)
+    return unique_advisories
 
