@@ -24,14 +24,14 @@ Although GitHub provides great vulnerability data, GitHub’s reviewed advisory 
    python3 -m venv myenv
  - Download dependencies:
    ```bash
-   pip install requirements.txt
+   pip install -r requirements.txt
  - Create a .env file to store your GitHub Personal Access Token:
    ```
    GITHUB_TOKEN=YOURTOKEN
    ```
  - Run:
    ```bash
-   python3 src/pulsecheck.py /path/to/dependency_file
+   python3 src/pulsecheck.py --file /path/to/dependency_file
    ```
 
    ```
