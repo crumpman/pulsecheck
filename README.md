@@ -1,6 +1,6 @@
 # Pulsecheck
 
-I wrote Pulsecheck to serve as a tool for early stage research on OSS third-party libraries and package vulnerabilities. 
+I wrote Pulsecheck to serve as a tool for early-stage research on OSS third-party libraries and package vulnerabilities. 
 
 Pulsecheck parses your dependency files and queries the [GitHub Advisory Database](https://github.com/advisories/) for all relevant GitHub-reviewed security advisories. It will provide data on every reviewed GHSA advisory for your respective dependency. 
 
