@@ -8,8 +8,6 @@ This project showcases how to use [GitHub’s GraphQL API](https://docs.github.c
 
 ### Caveats:
 
-Although GitHub provides great vulnerability data, GitHub’s reviewed advisory database is not a comprehensive one: 
-
 “Security vulnerability database inclusive of CVEs and GitHub originated security advisories from the world of open source software.” Please take into account that other vulnerabilities may exist that are not part of this dataset. 
 
 ## Getting Started
